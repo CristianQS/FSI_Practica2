@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import pickle
+from matplotlib.dates import epoch2num
 
 import tensorflow as tf
 import numpy as np
@@ -64,17 +65,23 @@ print "----------------------"
 
 batch_size = 20
 # Train
-
-for epoch in xrange(10):
+noError = True
+epoch = 0
+while noError and epoch < 500:
     for jj in xrange(len(x_training) / batch_size):
         batch_xs = x_training[jj * batch_size: jj * batch_size + batch_size]
         batch_ys = y_training[jj * batch_size: jj * batch_size + batch_size]
         sess.run(train, feed_dict={x: batch_xs, y_: batch_ys})
 
-    print "Epoch #:", epoch, "Error: ", sess.run(loss, feed_dict={x: x_validation, y_: y_validation})
+    error = sess.run(loss, feed_dict={x: x_validation, y_: y_validation})
+    print "Epoch #:", epoch, "Error: ",error
     result = sess.run(y, feed_dict={x: batch_xs})
     for b, r in zip(batch_ys, result):
         print b, "-->", r
+
+    epoch += 1
+    if error < 0.1:
+        noError = False
 
     print "----------------------------------------------------------------------------------"
 
@@ -84,4 +91,12 @@ print "----------------------"
 
 test = sess.run(loss, feed_dict={x: x_test, y_: y_test})
 print "Error del test ha sido de: ", test
+
+
+equalResults = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
+accuracy = tf.reduce_mean(tf.cast(equalResults, tf.float32))
+porcentaje = sess.run(accuracy, feed_dict={x: x_test, y_: y_test})*100
+print "El porcentaje de acierto es de: %f" % porcentaje
+
+
 
