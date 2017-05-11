@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 # Translate a list of labels into an array of 0's and one 1.
@@ -68,6 +69,8 @@ print "----------------------"
 batch_size = 20
 noError = True
 epoch = 0
+error_list = []
+epoch_list = []
 while noError and epoch < 1000:
     for jj in xrange(len(x_training) / batch_size):
         batch_xs = x_training[jj * batch_size: jj * batch_size + batch_size]
@@ -80,12 +83,15 @@ while noError and epoch < 1000:
     for b, r in zip(batch_ys, result):
         print b, "-->", r
 
+    error_list.append(error)
+    epoch_list.append(epoch)
+    plt.plot(epoch_list, error_list, 'b')
     epoch += 1
     if error < 1:
         noError = False
 
     print "----------------------------------------------------------------------------------"
-
+plt.show()
 print "----------------------"
 print "        TEST  "
 print "----------------------"

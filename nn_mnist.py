@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import pickle
+import matplotlib.pyplot as plt
 from matplotlib.dates import epoch2num
 
 import tensorflow as tf
@@ -67,6 +68,8 @@ batch_size = 20
 # Train
 noError = True
 epoch = 0
+error_list = []
+epoch_list = []
 while noError and epoch < 500:
     for jj in xrange(len(x_training) / batch_size):
         batch_xs = x_training[jj * batch_size: jj * batch_size + batch_size]
@@ -79,15 +82,17 @@ while noError and epoch < 500:
     for b, r in zip(batch_ys, result):
         print b, "-->", r
 
-    epoch += 1
     if error < 0.1:
         noError = False
 
+    error_list.append(error)
+    epoch_list.append(epoch)
+    epoch += 1
     print "----------------------------------------------------------------------------------"
-
 print "----------------------"
 print "        TEST  "
 print "----------------------"
+plt.show()
 
 test = sess.run(loss, feed_dict={x: x_test, y_: y_test})
 print "Error del test ha sido de: ", test
