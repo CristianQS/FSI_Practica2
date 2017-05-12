@@ -87,11 +87,15 @@ while noError and epoch < 500:
 
     error_list.append(error)
     epoch_list.append(epoch)
+    plt.plot(epoch_list, error_list, 'b')
+
     epoch += 1
     print "----------------------------------------------------------------------------------"
 print "----------------------"
 print "        TEST  "
 print "----------------------"
+plt.xlabel("N de intentos", fontsize=20)
+plt.ylabel("Error", fontsize=20)
 plt.show()
 
 test = sess.run(loss, feed_dict={x: x_test, y_: y_test})

@@ -91,6 +91,9 @@ while noError and epoch < 1000:
         noError = False
 
     print "----------------------------------------------------------------------------------"
+
+plt.xlabel("N de intentos", fontsize=20)
+plt.ylabel("Error", fontsize=20)
 plt.show()
 print "----------------------"
 print "        TEST  "
